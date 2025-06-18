@@ -16,73 +16,77 @@
 <body>
     <h1>🐍 Snake dos Gatinhos 😺</h1>
 
-  <div id="explicacao" aria-live="polite">
-    <h2>Como jogar</h2>
-    <p>Use as teclas <b>W (cima)</b>, <b>A (esquerda)</b>, <b>S (baixo)</b>, <b>D (direita)</b> para controlar a cobrinha.</p>
-    <p>Em dispositivos móveis, use os botões de direção na tela. Segure uma direção por 2 segundos para acelerar!</p>
-    <p>Coma as comidas vermelhas para crescer. Evite bater nas paredes ou no próprio corpo.</p>
-    <p>A cada 5, 10, 15 e 20 pontos o jogo pausa e mostra um gatinho fofo!</p>
-    <p>Em 30 pontos o jogo termina.</p>
-    <p>Para uma melhor experiência em celulares, gire o aparelho na horizontal.</p>
-  </div>
-
-  <button id="openGameBtn">Abrir Jogo da Cobrinha 🐍</button>
-
-  <!-- Modal -->
-  <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div id="modalContent">
-      <button id="closeModalBtn" aria-label="Fechar jogo">&times;</button>
-      <button id="fullscreenBtn" class="fullscreen-button" aria-label="Tela cheia">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-          <path fill="currentColor" d="M5 5h5V3H3v7h2V5zm5 14H5v-5H3v7h7v-2zm9-14h-5v2h5v5h2V3h-2v2zm-5 14h5v-5h2v7h-7v-2z"/>
-        </svg>
-      </button>
-
-      <canvas id="game" width="1000" height="400" aria-label="Tela do jogo da cobrinha"></canvas>
-
-      <!-- Controles de toque para dispositivos móveis -->
-      <div id="touchControls">
-        <div class="gamepad-container">
-          <div class="dpad-container">
-            <button id="upBtn" class="dpad-button dpad-up" aria-label="Mover para cima">▲</button>
-            <button id="rightBtn" class="dpad-button dpad-right" aria-label="Mover para direita">►</button>
-            <button id="downBtn" class="dpad-button dpad-down" aria-label="Mover para baixo">▼</button>
-            <button id="leftBtn" class="dpad-button dpad-left" aria-label="Mover para esquerda">◄</button>
-            <div class="dpad-button dpad-center"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="controls">
-        <button id="startBtn">Começar</button>
-        <button id="pauseBtn">Parar</button>
-        <button id="resumeBtn">Continuar</button>
-        <button id="restartBtn" style="display: none;">Reiniciar Jogo</button>
-      </div>
-
-      <div id="score" aria-live="polite">Pontos: 0</div>
-
-      <img id="milestone-img" alt="Gatinho fofo" />
-      <div id="countdown-warning">O jogo voltará em 5...</div>
-      <div id="milestone-overlay"></div>
+    <div id="explicacao" aria-live="polite">
+        <h2>Como jogar</h2>
+        <p>Use as teclas <b>W (cima)</b>, <b>A (esquerda)</b>, <b>S (baixo)</b>, <b>D (direita)</b> para controlar a cobrinha.</p>
+        <p>Em dispositivos móveis, use os botões de direção na tela. Segure uma direção por 2 segundos para acelerar!</p>
+        <p>Coma as comidas vermelhas para crescer. Evite bater nas paredes ou no próprio corpo.</p>
+        <p>A cada 5, 10, 15 e 20 pontos o jogo pausa e mostra um gatinho fofo!</p>
+        <p>Em 30 pontos o jogo termina.</p>
+        <p>Para uma melhor experiência em celulares, gire o aparelho na horizontal.</p>
     </div>
-  </div>
-  
-  <audio id="bgMusic" src="assets/we-will-fight-203574.mp3" loop></audio>
-  <audio id="eatSound" src="assets/1up4.mp3"></audio>
-  <audio id="dieSound" src="assets/31._game_over.wav"></audio>
-  <audio id="winMusic" src="assets/Viktor Kraus - Victory!.mp3"></audio>
-  <!-- Sons de gatos -->
-  <audio id="catSound1" src="assets/cat1.mp3"></audio>
-  <audio id="catSound2" src="assets/cat2.mp3"></audio>
-  <audio id="catSound3" src="assets/cat3.mp3"></audio>
-  <audio id="catSound4" src="assets/cat4.mp3"></audio>
 
-  <!-- Aviso para girar o telefone -->
-  <div id="orientationWarning" class="orientation-warning">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik00IDQzLjVIMzR2LTM5SDRaTTcsNy41SDMxdjMzSDdaIi8+PHBhdGggZD0iTTM5LjUsNDBINDIuNUEyLjUsMi41LDAsMCwwLDQ1LDM3LjVWMTAuNUEyLjUsMi41LDAsMCwwLDQyLjUsOEgzOS41di0zaDNhNS41MSw1LjUxLDAsMCwxLDUuNSw1LjV2MjdhNS41MSw1LjUxLDAsMCwxLTUuNSw1LjVoLTNaIi8+PHBhdGggZD0iTTE5IDI0QTUgNSAwIDEgMSAyNCAyOUE1IDUgMCAwIDEgMTkgMjRNMTkgMTlBNS4wMSA1LjAxIDAgMCAwIDE0IDI0QTUuMDEgNS4wMSAwIDAgMCAxOSAyOUE1LjAxIDUuMDEgMCAwIDAgMjQgMjRBNS4wMSA1LjAxIDAgMCAwIDE5IDE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=" alt="Gire o telefone">
-    <p>Por favor, gire seu dispositivo</p>
-    <span>O jogo funciona melhor na orientação paisagem (horizontal)</span>
-  </div>
+    <button id="openGameBtn">Abrir Jogo da Cobrinha 🐍</button>
+    <button id="openGameFullscreenBtn" class="fullscreen-game-btn">Jogar em Tela Cheia 🎮</button>
+
+    <!-- Modal -->
+    <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div id="modalContent">
+            <button id="closeModalBtn" aria-label="Fechar jogo">&times;</button>
+            <button id="fullscreenBtn" class="fullscreen-button" aria-label="Tela cheia">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M5 5h5V3H3v7h2V5zm5 14H5v-5H3v7h7v-2zm9-14h-5v2h5v5h2V3h-2v2zm-5 14h5v-5h2v7h-7v-2z"/>
+                </svg>
+            </button>
+
+            <div class="game-container">
+                <canvas id="game" width="1000" height="400" aria-label="Tela do jogo da cobrinha"></canvas>
+                
+                <!-- Score movido para dentro do container -->
+                <div id="score" class="score-display" aria-live="polite">Pontos: 0</div>
+                
+                <!-- Controles de toque para dispositivos móveis -->
+                <div id="touchControls">
+                    <div class="gamepad-container">
+                        <div class="dpad-container">
+                            <button id="upBtn" class="dpad-button dpad-up" aria-label="Mover para cima">▲</button>
+                            <button id="rightBtn" class="dpad-button dpad-right" aria-label="Mover para direita">►</button>
+                            <button id="downBtn" class="dpad-button dpad-down" aria-label="Mover para baixo">▼</button>
+                            <button id="leftBtn" class="dpad-button dpad-left" aria-label="Mover para esquerda">◄</button>
+                            <div class="dpad-button dpad-center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn">Começar</button>
+                <button id="pauseBtn">Parar</button>
+                <button id="resumeBtn">Continuar</button>
+                <button id="restartBtn" style="display: none;">Reiniciar Jogo</button>
+            </div>
+
+            <img id="milestone-img" alt="Gatinho fofo" />
+            <div id="countdown-warning">O jogo voltará em 5...</div>
+            <div id="milestone-overlay"></div>
+        </div>
+    </div>
+    
+    <audio id="bgMusic" src="assets/we-will-fight-203574.mp3" loop></audio>
+    <audio id="eatSound" src="assets/1up4.mp3"></audio>
+    <audio id="dieSound" src="assets/31._game_over.wav"></audio>
+    <audio id="winMusic" src="assets/Viktor Kraus - Victory!.mp3"></audio>
+    <!-- Sons de gatos -->
+    <audio id="catSound1" src="assets/cat1.mp3"></audio>
+    <audio id="catSound2" src="assets/cat2.mp3"></audio>
+    <audio id="catSound3" src="assets/cat3.mp3"></audio>
+    <audio id="catSound4" src="assets/cat4.mp3"></audio>
+
+    <!-- Aviso para girar o telefone -->
+    <div id="orientationWarning" class="orientation-warning">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik00IDQzLjVIMzR2LTM5SDRaTTcsNy41SDMxdjMzSDdaIi8+PHBhdGggZD0iTTM5LjUsNDBINDIuNUEyLjUsMi41LDAsMCwwLDQ1LDM3LjVWMTAuNUEyLjUsMi41LDAsMCwwLDQyLjUsOEgzOS41di0zaDNhNS41MSw1LjUxLDAsMCwxLDUuNSw1LjV2MjdhNS41MSw1LjUxLDAsMCwxLTUuNSw1LjVoLTNaIi8+PHBhdGggZD0iTTE5IDI0QTUgNSAwIDEgMSAyNCAyOUE1IDUgMCAwIDEgMTkgMjRNMTkgMTlBNS4wMSA1LjAxIDAgMCAwIDE0IDI0QTUuMDEgNS4wMSAwIDAgMCAxOSAyOUE1LjAxIDUuMDEgMCAwIDAgMjQgMjRBNS4wMSA1LjAxIDAgMCAwIDE5IDE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=" alt="Gire o telefone">
+        <p>Por favor, gire seu dispositivo</p>
+        <span>O jogo funciona melhor na orientação paisagem (horizontal)</span>
+    </div>
 </body>
 </html>
