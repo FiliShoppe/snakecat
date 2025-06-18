@@ -10,56 +10,60 @@
 <body>
     <h1>🐍 Snake dos Gatinhos 😺</h1>
 
-  <div id="explicacao" aria-live="polite">
-    <h2>Como jogar</h2>
-    <p>Use as teclas <b>W (cima)</b>, <b>A (esquerda)</b>, <b>S (baixo)</b>, <b>D (direita)</b> para controlar a cobrinha.</p>
-    <p>Em dispositivos móveis, use os botões de direção na tela.</p>
-    <p>Coma as comidas vermelhas para crescer. Evite bater nas paredes ou no próprio corpo.</p>
-    <p>A cada 5, 10, 15 e 20 pontos o jogo pausa e mostra um gatinho fofo!</p>
-    <p>Em 30 pontos o jogo termina.</p>
-  </div>
-
-  <button id="openGameBtn">Abrir Jogo da Cobrinha 🐍</button>
-
-  <!-- Modal -->
-  <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div id="modalContent">
-      <button id="closeModalBtn" aria-label="Fechar jogo">&times;</button>
-
-      <canvas id="game" width="1000" height="400" aria-label="Tela do jogo da cobrinha"></canvas>
-
-      <!-- Controles de toque para dispositivos móveis -->
-      <div id="touchControls">
-        <button id="upBtn" class="dirBtn" aria-label="Mover para cima">▲</button>
-        <div class="horizontal-controls">
-          <button id="leftBtn" class="dirBtn" aria-label="Mover para esquerda">◄</button>
-          <button id="rightBtn" class="dirBtn" aria-label="Mover para direita">►</button>
-        </div>
-        <button id="downBtn" class="dirBtn" aria-label="Mover para baixo">▼</button>
-      </div>
-
-      <div class="controls">
-        <button id="startBtn">Começar</button>
-        <button id="pauseBtn">Parar</button>
-        <button id="resumeBtn">Continuar</button>
-        <button id="restartBtn" style="display: none;">Reiniciar Jogo</button>
-      </div>
-
-      <div id="score" aria-live="polite">Pontos: 0</div>
-
-      <img id="milestone-img" alt="Gatinho fofo" />
-      <div id="countdown-warning">O jogo voltará em 5...</div>
-      <div id="milestone-overlay"></div>
+    <div id="explicacao" aria-live="polite">
+        <h2>Como jogar</h2>
+        <p>Use as teclas <b>W (cima)</b>, <b>A (esquerda)</b>, <b>S (baixo)</b>, <b>D (direita)</b> para controlar a cobrinha.</p>
+        <p>Em dispositivos móveis, use os botões de direção na tela.</p>
+        <p>Coma as comidas vermelhas para crescer. Evite bater nas paredes ou no próprio corpo.</p>
+        <p>A cada 5, 10, 15 e 20 pontos o jogo pausa e mostra um gatinho fofo!</p>
+        <p>Em 30 pontos o jogo termina.</p>
     </div>
-  </div>
-  <audio id="bgMusic" src="assets/we-will-fight-203574.mp3" loop></audio>
-  <audio id="eatSound" src="assets/1up4.mp3"></audio>
-  <audio id="dieSound" src="assets/31._game_over.wav"></audio>
-  <audio id="winMusic" src="assets/Viktor Kraus - Victory!.mp3"></audio>
-  <!--Pause cat-->
-  <audio id="catSound1" src="assets/cat_mewfood.wav"></audio>
-  <audio id="catSound2" src="assets/cat_mewpurr.wav"></audio>
-  <audio id="catSound3" src="assets/cat_softmew.wav"></audio>
-  <audio id="catSound4" src="assets/cat_mewpurr2.wav"></audio>
+
+    <button id="openGameBtn">Abrir Jogo da Cobrinha 🐍</button>
+
+    <!-- Modal -->
+    <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div id="modalContent">
+            <button id="closeModalBtn" aria-label="Fechar jogo">&times;</button>
+
+            <canvas id="game" width="1000" height="400" aria-label="Tela do jogo da cobrinha"></canvas>
+
+            <!-- Controles de toque para dispositivos móveis -->
+            <div id="touchControls">
+                <div class="dirBtnContainer">
+                    <button id="upBtn" class="dirBtn" aria-label="Mover para cima">▲</button>
+                    <div class="horizontal-controls">
+                        <button id="leftBtn" class="dirBtn" aria-label="Mover para esquerda">◄</button>
+                        <button id="rightBtn" class="dirBtn" aria-label="Mover para direita">►</button>
+                    </div>
+                    <button id="downBtn" class="dirBtn" aria-label="Mover para baixo">▼</button>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn">Começar</button>
+                <button id="pauseBtn">Parar</button>
+                <button id="resumeBtn">Continuar</button>
+                <button id="restartBtn" style="display: none;">Reiniciar Jogo</button>
+            </div>
+
+            <div id="score" aria-live="polite">Pontos: 0</div>
+
+            <img id="milestone-img" alt="Gatinho fofo" />
+            <div id="countdown-warning">O jogo voltará em 5...</div>
+            <div id="milestone-overlay"></div>
+        </div>
+    </div>
+
+    <!-- Áudios do jogo -->
+    <audio id="bgMusic" src="assets/we-will-fight-203574.mp3" loop></audio>
+    <audio id="eatSound" src="assets/1up4.mp3"></audio>
+    <audio id="dieSound" src="assets/31._game_over.wav"></audio>
+    <audio id="winMusic" src="assets/Viktor Kraus - Victory!.mp3"></audio>
+    <!-- Sons de gatos -->
+    <audio id="catSound1" src="assets/cat1.mp3"></audio>
+    <audio id="catSound2" src="assets/cat2.mp3"></audio>
+    <audio id="catSound3" src="assets/cat3.mp3"></audio>
+    <audio id="catSound4" src="assets/cat4.mp3"></audio>
 </body>
 </html>
