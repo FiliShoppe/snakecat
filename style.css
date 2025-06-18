@@ -458,7 +458,19 @@ button:hover {
   body {
     padding: 5px;
   }
-  
+   .dirBtnContainer{
+        border:10px solid #ccc;
+        display: flex;
+        flex-direction: column;
+    }
+    .horizontal-controls{
+        gap: 8rem;
+    }
+    .dirBtn{
+        width: 60px;
+        height: 35px;
+        font-size: 20px;
+    }
   #openGameBtn {
     margin: 10px auto 30px auto;
   }
