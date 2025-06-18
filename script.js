@@ -53,6 +53,11 @@ let touchStartTime = null;
 let touchHoldTimeout = null;
 let currentTouchBtn = null;
 
+// Configuração de velocidade por dispositivo
+const DESKTOP_BASE_SPEED = 150;
+const MOBILE_BASE_SPEED = 200;
+let isMobileDevice = false;
+
 // Imagens dos blocos
 const headImg = new Image();
 headImg.src = "./assets/rosto_gato.png";
@@ -117,20 +122,54 @@ function updateScore() {
   scoreEl.textContent = `Pontos: ${score}`;
 }
 
+// Detecta dispositivo móvel
+function detectMobileDevice() {
+  isMobileDevice = window.innerWidth < 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  return isMobileDevice;
+}
+
+// Ajusta velocidade base
+function setAppropriateSpeed() {
+  if (detectMobileDevice()) {
+    speed = MOBILE_BASE_SPEED;
+    normalSpeed = MOBILE_BASE_SPEED;
+  } else {
+    speed = DESKTOP_BASE_SPEED;
+    normalSpeed = DESKTOP_BASE_SPEED;
+  }
+}
+
 // Reinicia o jogo
 function resetGame() {
   snake = [{ x: 5, y: 5 }];
   direction = "right";
   score = 0;
-  speed = normalSpeed;
+  setAppropriateSpeed();
+  isBoosted = false;
   isRunning = false;
   gameEnded = false;
-  isBoosted = false;
   updateScore();
   placeFood();
+  milestoneImg.style.display = "none";
+  countdownEl.style.display = "none";
+  milestoneOverlay.style.display = "none";
+  restartBtn.style.display = "none";
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  winMusic.pause();
+  winMusic.currentTime = 0;
+  catSounds.forEach(sound => {
+    sound.pause();
+    sound.currentTime = 0;
+  });
+  clearTimeout(keyHoldTimeout);
+  clearTimeout(touchHoldTimeout);
+  if (currentTouchBtn) {
+    currentTouchBtn.classList.remove('boosted');
+    currentTouchBtn = null;
+  }
   clearInterval(gameLoop);
   draw();
-  restartBtn.style.display = "none";
   pauseBtn.disabled = false;
   resumeBtn.disabled = true;
 }
@@ -145,12 +184,6 @@ function placeFood() {
     };
     valid = !snake.some(seg => seg.x === food.x && seg.y === food.y);
   }
-}
-
-// Ajusta a velocidade do jogo
-function adjustSpeed() {
-  clearInterval(gameLoop);
-  gameLoop = setInterval(draw, speed);
 }
 
 // Reinicia o loop do jogo
@@ -293,7 +326,7 @@ document.addEventListener("keydown", (e) => {
       if (isRunning && !isBoosted) {
         isBoosted = true;
         normalSpeed = speed;
-        speed = Math.floor(speed / 2);
+        speed = Math.floor(speed / (isMobileDevice ? 1.5 : 2));
         restartLoop();
         canvas.classList.add("boosted");
       }
@@ -314,40 +347,44 @@ document.addEventListener("keyup", (e) => {
 });
 
 // Suporte a toque (mobile)
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-if (isTouchDevice) {
-  touchControls.style.display = "block";
-  function handleTouchStart(btn, dir) {
-    return function () {
-      if (!isRunning) return;
-      if (direction !== dir) {
-        direction = dir;
-        clearTimeout(touchHoldTimeout);
-        touchStartTime = Date.now();
-        currentTouchBtn = btn;
-        touchHoldTimeout = setTimeout(() => {
-          if (isRunning && !isBoosted) {
-            isBoosted = true;
-            normalSpeed = speed;
-            speed = Math.floor(speed / 2);
-            restartLoop();
-            btn.classList.add("boosted");
-          }
-        }, 2000);
-      }
-    };
-  }
-  function handleTouchEnd(btn) {
-    return function () {
+function handleTouchStart(btn, dir) {
+  return function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isRunning) return;
+    if (direction !== dir) {
+      direction = dir;
       clearTimeout(touchHoldTimeout);
-      if (isBoosted) {
-        isBoosted = false;
-        speed = normalSpeed;
-        restartLoop();
-        btn.classList.remove("boosted");
-      }
-    };
-  }
+      touchStartTime = Date.now();
+      currentTouchBtn = btn;
+      touchHoldTimeout = setTimeout(() => {
+        if (isRunning && !isBoosted && currentTouchBtn === btn) {
+          isBoosted = true;
+          normalSpeed = speed;
+          speed = Math.floor(speed / (isMobileDevice ? 1.5 : 2));
+          restartLoop();
+          btn.classList.add("boosted");
+        }
+      }, 2000);
+    }
+  };
+}
+function handleTouchEnd(btn) {
+  return function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    clearTimeout(touchHoldTimeout);
+    if (isBoosted && currentTouchBtn === btn) {
+      isBoosted = false;
+      speed = normalSpeed;
+      restartLoop();
+      btn.classList.remove("boosted");
+      currentTouchBtn = null;
+    }
+  };
+}
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  touchControls.style.display = "block";
   upBtn.addEventListener("touchstart", handleTouchStart(upBtn, "up"));
   downBtn.addEventListener("touchstart", handleTouchStart(downBtn, "down"));
   leftBtn.addEventListener("touchstart", handleTouchStart(leftBtn, "left"));
@@ -358,19 +395,40 @@ if (isTouchDevice) {
   rightBtn.addEventListener("touchend", handleTouchEnd(rightBtn));
 }
 
-// Adapta o canvas ao tamanho da tela
+// Adapta o canvas ao tamanho da tela (única versão)
 function resizeCanvas() {
-  const parent = canvas.parentElement;
-  let width = Math.min(parent.offsetWidth - 40, 1000);
-  let height = Math.min(window.innerHeight * 0.6, 400);
-  canvas.width = width;
-  canvas.height = height;
+  const modalContent = document.getElementById("modalContent");
+  if (!modalContent) return;
+  const isMobile = window.innerWidth < 768;
+  const modalWidth = modalContent.clientWidth - (isMobile ? 20 : 40);
+  const aspectRatio = 1000 / 400;
+  let newWidth = isMobile ? modalWidth : Math.min(modalWidth, 1100);
+  let newHeight = newWidth / aspectRatio;
+  canvas.width = newWidth;
+  canvas.height = newHeight;
   maxX = Math.floor(canvas.width / box);
   maxY = Math.floor(canvas.height / box);
   draw();
+  if (isMobile && touchControls) {
+    touchControls.style.marginTop = '5px';
+  } else if (touchControls) {
+    touchControls.style.marginTop = '15px';
+  }
 }
-window.addEventListener('load', resizeCanvas);
-window.addEventListener('resize', resizeCanvas);
+window.addEventListener('load', () => {
+  detectMobileDevice();
+  setAppropriateSpeed();
+  resizeCanvas();
+  if (isMobileDevice && touchControls) touchControls.style.display = "block";
+});
+window.addEventListener('resize', () => {
+  detectMobileDevice();
+  resizeCanvas();
+  if (isRunning && !isBoosted) {
+    setAppropriateSpeed();
+    restartLoop();
+  }
+});
 
 // Botões de controle
 startBtn.addEventListener("click", () => {
