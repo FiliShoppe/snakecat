@@ -55,7 +55,7 @@ let currentTouchBtn = null;
 
 // Configuração de velocidade por dispositivo
 const DESKTOP_BASE_SPEED = 150;
-const MOBILE_BASE_SPEED = 200;
+const MOBILE_BASE_SPEED = 300;
 let isMobileDevice = false;
 
 // Imagens dos blocos
