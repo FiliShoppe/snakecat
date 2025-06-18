@@ -182,12 +182,16 @@ canvas {
   }
 }
 
+/* Garantir que os botões fiquem embaixo do canvas em desktop por padrão */
 .controls {
   margin-top: 15px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+  position: static;
+  right: auto;
+  bottom: auto;
 }
 
 button {
@@ -415,7 +419,7 @@ body.portrait-mode {
     max-height: 80vh;
   }
   
-  /* Posicionamento dos controles */
+  /* Posicionamento dos controles APENAS para mobile em paisagem */
   #touchControls {
     position: absolute;
     width: 100%;
@@ -424,51 +428,55 @@ body.portrait-mode {
     left: 0;
   }
   
-  .gamepad-container {
-    position: absolute;
-    left: 15px;
-    bottom: 15px;
-  }
-  
-  .controls {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: auto;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-  }
-  
-  .controls:hover, 
-  .controls:active {
-    opacity: 1;
-  }
-  
-  .controls button {
-    padding: 10px;
-    margin: 2px;
-    min-width: 90px;
-  }
-  
-  #score {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    margin: 0;
-    font-size: 18px;
-    color: white;
-    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 5px 10px;
-    border-radius: 20px;
+  /* Aplicar estilos apenas para dispositivos móveis em paisagem */
+  @media (max-width: 768px) {
+    .gamepad-container {
+      position: absolute;
+      left: 15px;
+      bottom: 15px;
+    }
+    
+    .controls {
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: auto;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    
+    .controls:hover,
+    .controls:active {
+      opacity: 1;
+    }
+    
+    .controls button {
+      padding: 10px;
+      margin: 2px;
+      min-width: 90px;
+    }
+    
+    #score {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      margin: 0;
+      font-size: 18px;
+      color: white;
+      text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 20px;
+    }
   }
 }
 
 /* Para telas mais largas em landscape */
 @media screen and (orientation: landscape) and (min-height: 400px) {
+  /* Manter todos os estilos originais aqui */
   .gamepad-container {
     left: 20px;
     bottom: 20px;
@@ -498,15 +506,18 @@ body.portrait-mode {
     left: 57.5px;
   }
   
-  .controls {
-    right: 20px;
-    bottom: 20px;
-  }
-  
-  .controls button {
-    padding: 12px;
-    font-size: 16px;
-    min-width: 100px;
+  /* Aplicar posicionamento absoluto dos controles APENAS para dispositivos móveis */
+  @media (max-width: 768px) {
+    .controls {
+      right: 20px;
+      bottom: 20px;
+    }
+    
+    .controls button {
+      padding: 12px;
+      font-size: 16px;
+      min-width: 100px;
+    }
   }
 }
 
@@ -605,11 +616,11 @@ button:focus {
 }
 
 .fullscreen-mode .controls {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  display: flex;
-  flex-direction: column;
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .fullscreen-mode #score {
