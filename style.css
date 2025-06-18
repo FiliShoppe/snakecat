@@ -491,3 +491,29 @@ button:focus {
 #modalContent.fullscreen #fullscreenBtn {
   color: white;
 }
+/* Adicionar ao style.css */
+@keyframes invincible-glow {
+  0%, 100% { box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.5); }
+  50% { box-shadow: 0 0 20px 10px rgba(255, 255, 0, 0.8); }
+}
+
+.invincible {
+  animation: invincible-glow 1s infinite;
+}
+
+/* Indicador de invencibilidade */
+.invincibility-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: rgba(255, 255, 0, 0.3);
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
