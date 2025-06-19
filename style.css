@@ -546,7 +546,7 @@ body.portrait-mode {
   height: 100%;
   max-height: 80vh;
   object-fit: contain;
-  background: white;
+  background: black;
 }
 
 #countdown-warning {
